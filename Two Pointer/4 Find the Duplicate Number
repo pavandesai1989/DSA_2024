@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/find-the-duplicate-number/description/
+//https://leetcode.com/problems/find-the-duplicate-number/description/ 
 
 *************brute force**********
     int findDuplicate(vector<int>& nums) 
