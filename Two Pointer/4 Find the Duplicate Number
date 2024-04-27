@@ -1,0 +1,60 @@
+//https://leetcode.com/problems/find-the-duplicate-number/description/
+
+*************brute force**********
+    int findDuplicate(vector<int>& nums) 
+    {
+        int n=nums.size();
+        unordered_map<int,int> umap;
+
+        for(auto ele:nums){
+            umap[ele]++;
+        }
+
+        for(auto par:umap){
+            if(par.second >= 2)
+               return par.first;
+        }
+
+        return -1;        
+    }
+
+Iterating through the nums vector to populate the unordered_map umap takes O(n) time, where n is the number of elements in the input vector nums.
+Iterating through the unordered_map umap takes O(m) time, where m is the number of unique elements in the nums vector.
+Therefore, the overall time complexity is O(n + m).
+
+The space required by umap is proportional to the number of unique elements in the nums vector, which can be at most n.
+Therefore, the space complexity is O(n).
+
+
+****************optimal*********
+    int findDuplicate(vector<int>& nums) 
+    {
+        int slow = nums[0];
+        int fast = nums[0];
+
+        //detect the cycle 
+        do{
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while(slow !=fast);
+
+
+        //move slow to first place 
+        slow = nums[0];
+        while(slow!=fast)
+        {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+
+    Time : o(n)
+    space : 0(1)
+
+
+
+
+
+
+    
