@@ -1,2 +1,51 @@
 //https://leetcode.com/problems/two-sum/description/
 
+
+****brute force*********
+    vector<int> twoSum(vector<int>& nums, int target) 
+    {
+        vector<int> res;
+        int n=nums.size();
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++){
+                if(nums[i]+nums[j] == target){
+                    res.push_back(i);
+                    res.push_back(j);
+                    return res;
+                }
+            }
+        }      
+        return res;  
+    }
+
+Time : O(N^2)
+space : O(1)
+
+********** optimal **************
+    vector<int> twoSum(vector<int>& nums, int target) 
+    {
+        vector<int> res;
+        int n=nums.size();
+        unordered_map<int,int> umap;
+
+        for(int i=0;i<n;i++)
+        {
+            int k = target-nums[i];
+
+            if(umap.find(k) != umap.end()) //if present in map
+            {
+                res.push_back(i);
+                res.push_back(umap[k]);
+                return res;
+            }
+            umap[nums[i]] = i;
+        }
+        return res;        
+    }
+
+
+time : o(n)
+space : 0(n)
+
