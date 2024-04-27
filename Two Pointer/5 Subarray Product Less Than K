@@ -1,0 +1,54 @@
+//https://leetcode.com/problems/subarray-product-less-than-k/description/
+
+int numSubarrayProductLessThanK(vector<int>& nums, int k) 
+    {
+        int n=nums.size();
+        if(k<=1)
+           return 0;
+
+        int l=0;
+        int r=0;
+        int cnt = 0;
+        int prod = 1;
+
+        while(r<n)
+        {
+            //update prod
+            prod *= nums[r];
+
+            //if prod is invalid make it valid
+            while(prod>=k)
+            {
+                prod = prod/nums[l];
+                l++;
+            }  
+
+            cnt += r-l+1;
+            r++;
+
+        }
+        return cnt;
+    }
+
+    time : 0(n) and space : o(1)
+
+
+    ***********bruteforce*
+        int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int n=nums.size();
+        int c=0;
+        for(int i=0;i<n;i++){
+            int prod=1;
+            for(int j=i;j<n;j++){
+                prod=prod*nums[j];
+                // cout<<prod<<" ";
+                if(prod<k){
+                    c++;
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        return c;
+    }
