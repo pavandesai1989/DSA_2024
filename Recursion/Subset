@@ -1,0 +1,33 @@
+https://leetcode.com/problems/subsets/description/
+
+class Solution {
+public:
+    void helper(vector<int>& nums,int idx,vector<int>& temp,vector<vector<int>>& res)
+    {
+        //base case
+        if(idx>=nums.size())
+        {
+            res.push_back(temp);
+            return;
+        }
+        //call for the take case
+        temp.push_back(nums[idx]);
+
+        //call for the next idx
+        helper(nums,idx+1,temp,res);
+
+        //back track
+        temp.pop_back();
+
+        //call for the non take case
+        helper(nums,idx+1,temp,res);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) 
+    {
+        vector<vector<int>> res;
+        vector<int> temp;
+        helper(nums,0,temp,res);
+
+        return res;
+    }
+};
