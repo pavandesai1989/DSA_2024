@@ -1,0 +1,40 @@
+https://leetcode.com/problems/subsets-ii/description/
+
+
+
+
+class Solution {
+public:
+    void helper(vector<int>& nums,int idx,vector<int>& ds,vector<vector<int>>& res)
+    {
+        //base case
+        if(idx>=nums.size())
+        {
+            res.push_back(ds);
+            return;
+        }
+
+        //take case
+        ds.push_back(nums[idx]);
+        helper(nums,idx+1,ds,res);
+
+        //backtracking
+        ds.pop_back();
+
+        //avoid duplicates 
+        while(idx+1<nums.size() && nums[idx]==nums[idx+1])
+           idx++;
+
+        helper(nums,idx+1,ds,res);   
+
+    }
+
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) 
+    {
+        vector<vector<int>> res;
+        vector<int> ds;
+        sort(nums.begin(),nums.end());
+        helper(nums,0,ds,res);
+        return res;
+    }
+};
