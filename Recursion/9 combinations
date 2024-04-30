@@ -1,0 +1,33 @@
+https://leetcode.com/problems/combinations/description/
+
+
+class Solution {
+public:
+    //same ds is being modified so use ds by reference *********
+    void helper(int start,int& n,int k,vector<int>& ds,vector<vector<int>>& res) //ds by ref vvvvimp
+    {
+        //base case
+        if(k==0)
+        {
+            res.push_back(ds);
+            return;
+        }
+
+        if(start>n) return;
+
+        ds.push_back(start);
+        helper(start+1,n,k-1,ds,res);
+        ds.pop_back();
+
+        helper(start+1,n,k,ds,res);
+    }
+    vector<vector<int>> combine(int n, int k) 
+    {
+        vector<vector<int>> res;
+        vector<int> ds;
+
+        helper(1,n,k,ds,res);
+        return res;
+    }
+};
+
