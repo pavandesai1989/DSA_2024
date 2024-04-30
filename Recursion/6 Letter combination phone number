@@ -1,0 +1,38 @@
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/
+
+class Solution {
+public:
+    void helper(int idx,string dig,string op,vector<string>& mapping,vector<string>& res)
+    {
+        //base case
+        if(idx == dig.size())
+        {
+            res.push_back(op);
+            return;
+        }
+
+        int mind = dig[idx]-'0';
+        string val = mapping[mind];
+
+        for(int i=0;i<val.size();i++)
+        {
+            op.push_back(val[i]);
+            helper(idx+1,dig,op,mapping,res);
+            op.pop_back();
+        }
+    }
+
+    vector<string> letterCombinations(string digits) 
+    {
+        vector<string> res;
+
+        if(digits.size() == 0)
+           return res;
+        
+        string output="";
+        vector<string> mapping = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        helper(0,digits,output,mapping,res);
+
+        return res;
+    }
+};   
