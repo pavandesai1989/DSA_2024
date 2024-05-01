@@ -1,0 +1,103 @@
+https://leetcode.com/problems/trapping-rain-water/description/
+
+****brute force ***
+class Solution {
+public:
+    int trap(vector<int>& height) 
+    {
+        int n= height.size();
+        int ans = 0;
+
+        for(int i=1;i<n-1;i++)//first and last do not contribute
+        {
+            int lmax = height[i];
+            int rmax = height[i];
+
+            //find the max ele on left of i
+            for(int j=0;j<i;j++)
+               lmax = max(lmax,height[j]);
+
+            //find the max ele on the right of i
+            for(int j=i+1;j<n;j++)
+               rmax = max(rmax,height[j]);
+
+            //add to the answer 
+            ans += min(lmax,rmax) - height[i];
+        }
+        return ans;
+    }
+};
+
+*********better by using prefix sum****
+class Solution {
+public:
+    int trap(vector<int>& height) 
+    {
+        int n = height.size();
+        int water = 0;
+        vector<int> leftsum(n),rightsum(n);
+
+        leftsum[0] = height[0];    
+        for(int i=1;i<n;i++)
+        {
+            leftsum[i] = max(leftsum[i-1],height[i]);
+        }
+
+        rightsum[n-1] = height[n-1]; //imp 
+        for(int i=n-2;i>=0;i--)
+        {
+            rightsum[i] = max(rightsum[i+1],height[i]);
+        }
+
+        for(int i=1;i<n-1;i++)
+        {
+            water += min(leftsum[i],rightsum[i]) - height[i];
+        }
+        return water;        
+    }
+};
+
+
+********optimal******
+class Solution {
+public:
+    int trap(vector<int>& height) 
+    {
+        int n = height.size();
+        int l = 0;
+        int r = n-1;
+        int water = 0;
+        int leftmax = 0;
+        int rightmax = 0;
+
+        while(l<r)
+        {
+            if(height[l]<=height[r])
+            {
+               if(height[l]>leftmax)
+               {
+                  //we got max value and this will not store any water
+                  leftmax = height[l];
+               }
+               else
+               {
+                   water += leftmax - height[l];
+               }
+               l++;
+            }
+            else
+            {
+                if(height[r]>rightmax)
+                {
+                    rightmax = height[r];
+                }
+                else
+                {
+                    water += rightmax - height[r];
+                }
+                r--;
+            }
+        }
+        return water;
+    }
+};
