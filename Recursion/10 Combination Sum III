@@ -1,0 +1,36 @@
+https://leetcode.com/problems/combination-sum-iii/description/
+
+class Solution {
+public:
+    void solve(int start,int k,int n,vector<int>&ds,vector<vector<int>>& res)
+    {
+        if(k==0)
+        {
+            if(n==0)
+            {
+                res.push_back(ds);
+            }
+            return;
+        }
+
+        if(start==10)
+           return;
+
+        ds.push_back(start);
+        solve(start+1,k-1,n-start,ds,res);
+        ds.pop_back();
+
+        solve(start+1,k,n,ds,res);
+    
+    }
+    vector<vector<int>> combinationSum3(int k, int n)
+    {
+       vector<vector<int>> res;
+       vector<int> ds;
+
+       solve(1,k,n,ds,res);
+
+       return res;
+
+    }
+};
