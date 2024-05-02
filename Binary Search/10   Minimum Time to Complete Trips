@@ -1,0 +1,11 @@
+https://leetcode.com/problems/minimum-time-to-complete-trips/description/
+
+
+minimum time can be 1, less than 1 can not possible.
+maximum time can be (minimum element of given time array * total trips).
+we use binary search to chose optimally minimum time that can be required to complete total trips
+when number of trips completed by 'mid' time >= total trips, then our ans can be 'mid' time, but less than 'mid' time can be possible, so we reduce our search space.
+when number of trips completed by 'mid' time < total trips, then our ans can not be 'mid' time, but greater than 'mid' time can be possible, so we increase our start to increase mid.
+  
+
+same as koko eating bananas *****
