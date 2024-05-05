@@ -1,0 +1,46 @@
+https://leetcode.com/problems/split-array-largest-sum/description/
+
+#include<bits/stdc++.h>
+class Solution {
+public:
+    int isPossibleSolution(vector<int>& arr,int mid)
+    {
+        int num_subarrays = 1;
+        int sum = 0;
+
+        for(auto ele:arr)
+        {
+            if(sum+ele<=mid)
+            {
+                sum += ele;
+            }
+            else
+            {
+                num_subarrays++;
+                sum = ele;
+            }
+        }
+        return num_subarrays;
+    }
+    int splitArray(vector<int>& nums, int k) 
+    {
+        int low=INT_MIN;
+        int high =0 ;
+        for(auto ele:nums)
+        {
+            low = max(low,ele);
+
+            high += ele;
+        }
+
+        while(low<=high)
+        {
+            int mid = low + (high-low)/2;
+            if(isPossibleSolution(nums,mid)>k)
+              low = mid+1;
+            else
+              high = mid-1;  
+        }
+        return low;
+    }
+};
