@@ -1,0 +1,26 @@
+https://leetcode.com/problems/first-bad-version/
+
+// The API isBadVersion is defined for you.
+// bool isBadVersion(int version);
+
+class Solution {
+public:
+    int firstBadVersion(int n) 
+    {
+        int s=1;
+        int e=n;
+        int mid=-1;
+
+        while(s<=e)
+        {
+            mid = s + (e-s)/2;
+            if(mid>=1 && isBadVersion(mid)==true && isBadVersion(mid-1)==false)
+              return mid;
+            else if(mid>=1 && isBadVersion(mid)==false)
+              s=mid+1;
+            else
+              e=mid-1;    
+        }
+        return mid;
+    }
+};
