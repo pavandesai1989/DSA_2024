@@ -1,0 +1,77 @@
+//https://www.naukri.com/code360/problems/maximum-sum-of-non-adjacent-elements_843261
+
+#include <bits/stdc++.h> 
+int solve(int idx,vector<int>& arr)
+{
+    if(idx<0)
+       return 0;
+    //base case
+    if(idx==0)
+       return arr[idx];     
+
+     int pick = arr[idx]+solve(idx-2,arr);
+     int nopick = solve(idx-1,arr);
+
+     return max(pick,nopick);
+}
+
+
+
+int maximumNonAdjacentSum(vector<int> &nums)
+{
+    int n = nums.size();
+    return solve(n-1,nums);
+}
+
+
+********memoization*****
+#include <bits/stdc++.h> 
+int solve(int idx,vector<int>& arr,vector<int>& dp)
+{
+    if(idx<0)
+       return 0;
+    //base case
+    if(idx==0)
+       return arr[idx];    
+
+    if(dp[idx]!=-1)
+       return dp[idx];    
+
+     int pick = arr[idx]+solve(idx-2,arr,dp);
+     int nopick = solve(idx-1,arr,dp);
+
+     return dp[idx] = max(pick,nopick);
+}
+
+
+
+int maximumNonAdjacentSum(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> dp(n+1,-1);
+    return solve(n-1,nums,dp);
+}
+
+
+*******tabulation***
+#include <bits/stdc++.h> 
+int maximumNonAdjacentSum(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> dp(n,-1);   //****
+    dp[0] = nums[0];
+
+    int pick = INT_MIN;
+    int nopick = INT_MIN;
+
+    for(int i=1;i<n;i++)   //*****
+    {
+        pick = nums[i];
+        if(i>1)
+          pick += dp[i-2];
+        nopick = dp[i-1];
+
+        dp[i] = max(pick,nopick);
+    }
+    return dp[n-1];  //*******
+}
