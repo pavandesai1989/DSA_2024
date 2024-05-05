@@ -1,0 +1,104 @@
+https://leetcode.com/problems/fibonacci-number/description/
+
+**********recursion :
+class Solution {
+public:
+    int fib(int n) 
+    {
+        if(n<=1)
+          return n;
+        return fib(n-1) + fib(n-2);
+    }
+};
+
+Time : 2^n
+space:  stack space
+
+
+*********memoization************
+class Solution {
+public:
+    int solve(int n,vector<int>& dp)
+    {
+        if(n<=1)
+          return n;
+
+        if(dp[n]!=-1)
+          return dp[n];
+
+        return dp[n] =  solve(n-1,dp) + solve(n-2,dp);   
+    }
+
+    int fib(int n) 
+    {
+        if(n<=1)
+          return n;
+
+        vector<int> dp(n+1,-1);
+        return solve(n,dp);
+    }
+};
+
+Time Complexity: O(N)
+
+Reason: The overlapping subproblems will return the answer in constant time O(1). Therefore the total number of new subproblems we solve is ‘n’. Hence total time complexity is O(N).
+
+Space Complexity: O(N)
+
+Reason: We are using a recursion stack space(O(N)) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)
+
+
+***********tabulation************
+class Solution {
+public:
+    int fib(int n) 
+    {
+        //tabulation : move from the base case to answer i.e. bottom up approach
+        vector<int> dp(n+1,0); //we need max of n value so create n+1 array
+
+        //base case 
+        dp[0]=0;
+        dp[1]=1;
+
+        for(int i=2;i<=n;i++)   //till <= not <n *****
+          dp[i] = dp[i-1] + dp[i-2];
+
+        return dp[n];       
+    }
+};
+
+Time Complexity: O(N)
+
+Reason: We are running a simple iterative loop
+
+Space Complexity: O(N)
+
+Reason: We are using an external array of size ‘n+1’.
+
+*********space optimization******
+class Solution {
+public:
+    int fib(int n) 
+    {
+        int p2 = 0;
+        int p = 1;
+
+        for(int i=2;i<n;i++)
+        {
+            int curr = p2 + p;
+            p2 = p;
+            p = curr;
+        }
+        return p;        
+    }
+};
+
+Time Complexity: O(N)
+
+Reason: We are running a simple iterative loop
+
+Space Complexity: O(1)
+
+Reason: We are not using any extra space
+
+
