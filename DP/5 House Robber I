@@ -1,0 +1,73 @@
+
+https://leetcode.com/problems/house-robber/description/
+
+****recursion***
+class Solution {
+public:
+    int solve(int idx,vector<int>& nums)
+    {
+        if(idx<0) return 0;
+        if(idx==0) //if we are at index 0 means we have not taken index 1 
+           return nums[idx];
+
+        //pick 
+        int pick = nums[idx] + solve(idx-2,nums);
+        int nopick = solve(idx-1,nums);
+
+        return max(pick,nopick);   
+    }
+    int rob(vector<int>& nums) 
+    {
+        return solve(nums.size()-1,nums);
+    }
+};
+
+********memoization****
+class Solution {
+public:
+    int solve(int idx,vector<int>& nums,vector<int>& dp)
+    {
+        if(idx<0) return 0;
+        if(idx==0) //if we are at index 0 means we have not taken index 1 
+           return nums[idx];
+
+        if(dp[idx]!=-1)
+          return dp[idx];   
+
+        //pick 
+        int pick = nums[idx] + solve(idx-2,nums,dp);
+        int nopick = solve(idx-1,nums,dp);
+
+        return dp[idx] = max(pick,nopick);   
+    }
+    int rob(vector<int>& nums) 
+    {
+        vector<int> dp(nums.size(),-1);
+        return solve(nums.size()-1,nums,dp);
+    }
+};
+
+*********tabulation*********
+class Solution {
+public:
+    int rob(vector<int>& nums) 
+    {
+        int n=nums.size();
+        vector<int> dp(n,-1);
+        //base case 
+        dp[0] = nums[0];
+        int pick = INT_MIN;
+        int nopick = INT_MIN;
+
+        for(int i=1;i<n;i++)
+        {
+            pick = nums[i];
+            if(i>1)
+               pick += dp[i-2];
+            nopick = dp[i-1];
+
+            dp[i] = max(pick,nopick);   
+        }
+        return dp[n-1];   //imp as we have n size array 
+    }
+};
