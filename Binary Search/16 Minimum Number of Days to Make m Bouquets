@@ -1,0 +1,46 @@
+https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/description/
+
+class Solution {
+public:
+    bool isPossibleSolution(vector<int>& arr,int mid,int m,int k)
+    {
+        int cnt=0;
+        int boutique=0;
+
+        for(int i=0;i<arr.size();i++)
+        {
+            if(arr[i]<=mid)
+            {
+                cnt++;
+            }
+            else
+            {
+                boutique += (cnt/k);
+                cnt=0;
+            }
+        }
+
+        boutique += (cnt/k);
+        return boutique>=m;
+    }
+
+    int minDays(vector<int>& bloomDay, int m, int k) 
+    {
+        long long val = m * 1ll * k * 1ll;   //vvimp overflow 
+        int n = bloomDay.size(); //size of the array
+        if (val > n) return -1; //impossible case.
+
+        int low = *min_element(bloomDay.begin(),bloomDay.end());
+        int high = *max_element(bloomDay.begin(),bloomDay.end());
+
+        while(low<=high)
+        {
+            int mid = low + (high-low)/2;
+            if(isPossibleSolution(bloomDay,mid,m,k))
+              high = mid-1; //we need min value
+            else
+              low = mid+1;  
+        }
+        return low;
+    }
+};
