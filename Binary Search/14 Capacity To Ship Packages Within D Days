@@ -1,0 +1,44 @@
+
+https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+
+class Solution {
+public:
+    int ispossiblesolution(vector<int>& arr,int mid)
+    {
+        int num_Days = 1;
+        int maxdays = 0;
+
+        for(auto ele:arr)
+        {
+            if(maxdays+ele<=mid)
+            {
+                maxdays += ele;
+            }
+            else
+            {
+                num_Days++;
+                maxdays = ele;
+            }
+        }
+        return num_Days;
+    }
+    int shipWithinDays(vector<int>& weights, int days) 
+    {
+        int low = *max_element(weights.begin(),weights.end());
+        int high = accumulate(weights.begin(),weights.end(),0);
+
+        while(low<=high)
+        {
+            int mid = low + (high-low)/2;
+            if(ispossiblesolution(weights,mid)>days)
+            {
+                low = mid+1;
+            }
+            else
+            {
+                high = mid-1;
+            }
+        }
+        return low;
+    }
+};
