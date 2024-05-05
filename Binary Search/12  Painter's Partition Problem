@@ -1,0 +1,37 @@
+https://www.naukri.com/code360/problems/painter-s-partition-problem_1089557
+
+
+int ispossible(vector<int>& arr,int mid)
+{
+    int num_paint=1;
+    int time = 0;
+
+    for(auto ele:arr)
+    {
+        if(ele+time<=mid)
+        {
+            time +=ele;
+        }
+        else
+        {
+            num_paint++;
+            time = ele;
+        }
+    }
+    return num_paint;
+}
+int findLargestMinDistance(vector<int> &arr, int k)
+{
+    int low = *max_element(arr.begin(),arr.end());
+    int high = accumulate(arr.begin(),arr.end(),0);
+
+    while(low<=high)
+    {
+        int mid = low+(high-low)/2;
+        if(ispossible(arr,mid)>k)
+           low = mid+1;
+        else
+           high = mid-1;   
+    }
+    return low;
+}
