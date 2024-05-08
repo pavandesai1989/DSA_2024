@@ -1,0 +1,96 @@
+https://www.geeksforgeeks.org/problems/subset-sum-problem-1611555638/1
+
+
+
+recursion:
+
+class Solution{   
+public:
+    bool helper(int idx,vector<int>& arr,int target)
+    {
+        if(target==0)
+          return true;
+        
+        if(idx==0)
+          return arr[0]==target;
+        
+        bool no_pick = helper(idx-1,arr,target);
+        bool pick = false;
+        
+        if(arr[idx]<=target)
+          pick = helper(idx-1,arr,target-arr[idx]);
+        
+        return pick || no_pick;  
+    }
+    
+    bool isSubsetSum(vector<int>arr, int sum)
+    {
+        return helper(arr.size()-1,arr,sum); 
+    }
+};
+
+
+memoization :
+
+value of the idx is between the 0 and n-1 so we have take dp[n]
+value of sum can be between o to sum . so take dp[sum+1] **********
+
+so dp array is of size dp[n][sum+1]
+
+class Solution{   
+public:
+    bool helper(int idx,vector<int>& arr,int target)
+    {
+        if(target==0)
+          return true;
+        
+        if(idx==0)
+          return arr[0]==target;
+        
+        bool no_pick = helper(idx-1,arr,target);
+        bool pick = false;
+        
+        if(arr[idx]<=target)
+          pick = helper(idx-1,arr,target-arr[idx]);
+        
+        return pick || no_pick;  
+    }
+    
+    bool isSubsetSum(vector<int>arr, int sum)
+    {
+        return helper(arr.size()-1,arr,sum); 
+    }
+};
+
+*********tabulartion*****
+bool isSubsetSum(vector<int>arr, int sum)
+    {
+        int n = arr.size();
+        vector<vector<int>> dp(n,vector<int>(sum+1,false));
+        
+        
+        //base case 
+        for(int i=0;i<n;i++)
+          dp[i][0] = true;
+        
+        //base case
+        if(arr[0]<=sum)
+          dp[0][arr[0]] = true;
+        
+        for(int i=1;i<n;i++)
+        {
+            for(int j=1;j<sum+1;j++)
+            {
+                //not pick
+                bool np = dp[i-1][j];
+                
+                //pick case 
+                bool pick = false;
+                if(arr[i]<=j)
+                   pick = dp[i-1][j-arr[i]];
+                
+                dp[i][j] = pick || np;   
+            }
+        }
+        return dp[n-1][sum];
+    }
