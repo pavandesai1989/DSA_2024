@@ -1,0 +1,93 @@
+//https://leetcode.com/problems/minimum-path-sum/description/
+
+recursion 
+
+class Solution {
+public:
+    int helper(vector<vector<int>>& grid,int i,int j)
+    {
+        if(i<0 || j<0)
+          return INT_MAX;
+
+        if(i==0 && j==0)
+          return grid[i][j];  
+
+        return grid[i][j] + min(helper(grid,i-1,j),helper(grid,i,j-1));       
+    }
+
+    int minPathSum(vector<vector<int>>& grid) 
+    {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        return helper(grid,m-1,n-1);
+    }
+};
+
+
+*******memoization******
+class Solution {
+public:
+    int helper(vector<vector<int>>& grid,int i,int j,vector<vector<int>>& dp)
+    {
+        if(i<0 || j<0)
+          return INT_MAX;
+
+        if(i==0 && j==0)
+          return grid[i][j];  
+
+        if(dp[i][j] != -1)
+          return dp[i][j];  
+
+        return dp[i][j] = grid[i][j] + min(helper(grid,i-1,j,dp),helper(grid,i,j-1,dp));       
+    }
+
+    int minPathSum(vector<vector<int>>& grid) 
+    {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+
+        return helper(grid,m-1,n-1,dp);
+    }
+};
+
+Time Complexity: O(N*M)
+
+Reason: At max, there will be N*M calls of recursion.
+
+Space Complexity: O((M-1)+(N-1)) + O(N*M)
+
+Reason: We are using a recursion stack space: O((M-1)+(N-1)), here (M-1)+(N-1) is the path length and an external DP Array of size ‘N*M’.
+
+**********tabulation*************
+    int minPathSum(vector<vector<int>>& grid) 
+    {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i==0 && j==0)
+                  dp[i][j] = grid[i][j]; //imp
+                else
+                {
+                    int right = 1e9;
+                    int down = 1e9;
+
+                    if(i>0)
+                      right = grid[i][j] + dp[i-1][j];
+
+                    if(j>0)
+                      down = grid[i][j] + dp[i][j-1];
+
+                    dp[i][j] = min(right,down);    
+                }  
+            }
+        }
+        return dp[m-1][n-1];
+    }
+};
