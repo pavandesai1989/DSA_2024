@@ -1,0 +1,48 @@
+https://leetcode.com/problems/partition-equal-subset-sum/description/
+
+same as subset sum problem 10 
+
+class Solution {
+public:
+    bool canPartition(vector<int>& arr) 
+    {
+         int totalsum = 0;
+         int n = arr.size();
+         for(auto ele:arr)
+            totalsum +=ele;
+
+         if(totalsum%2 !=0)
+           return false;
+         else
+        {
+            int sum = totalsum/2;
+            int n = arr.size();
+            vector<vector<int>> dp(n,vector<int>(sum+1,false));            
+            
+            //base case 
+            for(int i=0;i<n;i++)
+            dp[i][0] = true;
+            
+            //base case
+            if(arr[0]<=sum)
+            dp[0][arr[0]] = true;
+            
+            for(int i=1;i<n;i++)
+            {
+                for(int j=1;j<sum+1;j++)
+                {
+                    //not pick
+                    bool np = dp[i-1][j];
+                    
+                    //pick case 
+                    bool pick = false;
+                    if(arr[i]<=j)
+                    pick = dp[i-1][j-arr[i]];
+                    
+                    dp[i][j] = pick || np;   
+                }
+            }
+            return dp[n-1][sum];
+        }    
+    }
+};
