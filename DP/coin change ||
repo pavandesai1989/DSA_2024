@@ -1,0 +1,61 @@
+https://leetcode.com/problems/coin-change-ii/description/
+
+
+class Solution {
+public:
+    int helper(int idx,int tar,vector<int>& arr)
+    {
+       if(tar==0)
+       {
+          return tar%arr[idx]==0;
+       }
+       if(idx<0)
+         return 0;
+
+       //no pick
+       int np = helper(idx-1,tar,arr);
+       int pick = 0;
+
+       if(arr[idx]<=tar)
+         pick = helper(idx,tar-arr[idx],arr);
+
+        return pick + np; 
+    }
+    int change(int amount, vector<int>& coins) 
+    {
+        return helper(coins.size()-1,amount,coins);
+    }
+};
+
+***********
+class Solution {
+public:
+    int helper(int idx,int tar,vector<int>& arr,vector<vector<int>>& dp)
+    {
+       if(tar==0)
+       {
+          return tar%arr[idx]==0;
+       }
+       if(idx<0)
+         return 0;
+
+       if(dp[idx][tar] != -1)
+         return dp[idx][tar];  
+
+       //no pick
+       int np = helper(idx-1,tar,arr,dp);
+       int pick = 0;
+
+       if(arr[idx]<=tar)
+         pick = helper(idx,tar-arr[idx],arr,dp);
+
+        return dp[idx][tar] = pick + np; 
+    }
+    int change(int amount, vector<int>& coins) 
+    {
+        vector<vector<int>> dp(coins.size()+1,vector<int>(amount+1,-1));
+        return helper(coins.size()-1,amount,coins,dp);
+    }
+};
+
+
