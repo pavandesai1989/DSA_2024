@@ -1,0 +1,55 @@
+https://www.naukri.com/code360/problems/unbounded-knapsack_1215029
+
+int helper(int idx ,int w ,vector<int> &profit, vector<int> &weight)
+{
+     //base case
+     if(idx==0)
+     {
+         return (int)(w/weight[0])*(profit[0]);
+     }
+
+     //not pick 
+     int np = helper(idx-1,w,profit,weight);
+
+     //pick
+     int p = -1e9;
+     if(weight[idx]<=w)
+         p = profit[idx] + helper(idx,w-weight[idx],profit,weight);
+
+      return max(np,p);   
+}
+
+int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+{
+   return helper(n-1,w,profit,weight);
+}
+
+
+
+int helper(int idx ,int w ,vector<int> &profit, vector<int> &weight,vector<vector<int>>& dp)
+{
+     //base case
+     if(idx==0)
+     {
+         return (int)(w/weight[0])*(profit[0]);
+     }
+
+     if(dp[idx][w] != -1)
+       return dp[idx][w];
+
+     //not pick 
+     int np = helper(idx-1,w,profit,weight,dp);
+
+     //pick
+     int p = -1e9;
+     if(weight[idx]<=w)
+         p = profit[idx] + helper(idx,w-weight[idx],profit,weight,dp);
+
+      return dp[idx][w] = max(np,p);   
+}
+
+int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+{
+    vector<vector<int>> dp(n+1,vector<int>(w+1,-1));
+   return helper(n-1,w,profit,weight,dp);
+}
