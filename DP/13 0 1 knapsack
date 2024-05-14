@@ -1,0 +1,51 @@
+//https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1
+
+
+
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+**********
+
+
+
+*************
+
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    int helper(int idx,int W,int wt[], int val[], int n,vector<vector<int>>& dp)
+    {
+        if(idx<0)
+          return 0;
+        
+        if(idx==0)
+        {
+            if(wt[idx]<=W)
+              return val[idx];
+            else
+              return 0;
+        }
+        
+        if(dp[idx][W] != -1)
+          return dp[idx][W];
+        
+        //not pick 
+        int np = helper(idx-1,W,wt,val,n);
+        int p = INT_MIN;
+        
+        if(wt[idx]<=W)
+          p = val[idx] + helper(idx-1,W-wt[idx],wt,val,n);
+        
+        return dp[idx][W] = max(np,p);  
+    }
+    //Function to return max value that can be put in knapsack of capacity W.
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       vector<vector<int>> dp(n+1,vector<int>(W+1,-1));    
+       return helper(n-1,W,wt,val,n,dp);
+    }
+};
