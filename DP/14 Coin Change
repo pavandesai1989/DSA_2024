@@ -1,0 +1,84 @@
+//https://leetcode.com/problems/coin-change/description/
+*****
+class Solution {
+public:
+    int helper(int idx,int tar,vector<int>& arr)
+    {
+       //base case 
+       if(idx==0)
+       {
+          if(tar%arr[idx] == 0)
+          {
+            return tar/arr[idx];
+          }
+          else
+            return INT_MAX; // its not answer 
+       }
+
+       //not pick 
+       int np = helper(idx-1,tar,arr);
+
+       //pick
+       int pick = 1e9;
+       if(arr[idx]<=tar)
+          pick = 1 + helper(idx,tar-arr[idx],arr);
+
+        return min(np,pick);  
+    }
+    int coinChange(vector<int>& coins, int amount) 
+    {
+        int n = coins.size();
+        int ans = helper(coins.size()-1,amount,coins);
+
+        if (ans>=1e9)
+          return -1;
+        else 
+          return ans; 
+    }
+};
+
+
+******
+class Solution {
+public:
+    int helper(int idx,int tar,vector<int>& arr,vector<vector<int>>& dp)
+    {
+       //base case 
+       if(idx==0)
+       {
+          if(tar%arr[idx] == 0)
+          {
+            return tar/arr[idx];
+          }
+          else
+            return INT_MAX; // its not answer 
+       }
+
+       if(dp[idx][tar] != -1)
+         return dp[idx][tar];
+
+       //not pick 
+       int np = helper(idx-1,tar,arr,dp);
+
+       //pick
+       int pick = 1e9;
+       if(arr[idx]<=tar)
+          pick = 1 + helper(idx,tar-arr[idx],arr,dp);
+
+        return dp[idx][tar] = min(np,pick);  
+    }
+    int coinChange(vector<int>& coins, int amount) 
+    {
+        int n = coins.size();
+        vector<vector<int>> dp(n+1,vector<int>(amount+1,-1));
+
+        int ans = helper(coins.size()-1,amount,coins,dp);
+
+        if (ans>=1e9)
+          return -1;
+        else 
+          return ans; 
+    }
+};
+
+*********
