@@ -1,5 +1,60 @@
 https://www.geeksforgeeks.org/problems/longest-common-substring1452/1
 
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution{
+    public:
+    
+    int helper(int i,int j,string& s1,string& s2,int cnt)
+    {
+        if(i<0 || j<0)
+           return cnt;
+        
+        int max1 = cnt; 
+
+        if(s1[i]==s2[j])
+        {
+           max1 = helper(i-1,j-1,s1,s2,cnt+1); 
+        }
+        
+        int max2 = helper(i,j-1,s1,s2,0);
+        int max3 = helper(i-1,j,s1,s2,0);
+        
+        return max(max1,max(max2,max3));
+    }
+    
+    int longestCommonSubstr (string S1, string S2, int n, int m)
+    {
+        int cnt=0;
+        return helper(n-1,m-1,S1,S2,cnt);
+    }
+};
+
+//{ Driver Code Starts.
+
+int main()
+{
+    int t; cin >> t;
+    while (t--)
+    {
+        int n, m; cin >> n >> m;
+        string s1, s2;
+        cin >> s1 >> s2;
+        Solution ob;
+
+        cout << ob.longestCommonSubstr (s1, s2, n, m) << endl;
+    }
+}
+// Contributed By: Pranay Bansal
+
+// } Driver Code Ends
+
+**********to memoize its 3 D DP **** n,m,count 
+
 //{ Driver Code Starts
 #include<bits/stdc++.h>
 using namespace std;
